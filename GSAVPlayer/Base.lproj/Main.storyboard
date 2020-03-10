@@ -29,7 +29,7 @@
                                             <action selector="playVideoInViewClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4dT-cx-Rkm"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YaK-bM-Yoa">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="YaK-bM-Yoa">
                                         <rect key="frame" x="0.0" y="174.5" width="320" height="175"/>
                                         <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -51,6 +51,17 @@
                                             <action selector="playVideoInViewWithDefaultControlsClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="5NX-5E-YeR"/>
                                         </connections>
                                     </button>
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WlN-bZ-Q7W">
+                                        <rect key="frame" x="0.0" y="524" width="320" height="0.0"/>
+                                        <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <state key="normal" title="Video List">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="videoListButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kch-jT-0O3"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                             </stackView>
                         </subviews>
@@ -64,6 +75,11 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="ZRJ-zL-hof"/>
+                    <connections>
+                        <outlet property="buttonFullScreenDefault" destination="YaK-bM-Yoa" id="6gG-rd-CBF"/>
+                        <outlet property="buttonViewCustom" destination="orH-l0-ftX" id="GWI-Og-1No"/>
+                        <outlet property="buttonViewDefault" destination="tT4-LD-Vmb" id="gZ3-WX-snG"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -346,6 +362,40 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QGa-HO-pBM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2409" y="120"/>
+        </scene>
+        <!--Video List Controller-->
+        <scene sceneID="5lG-OQ-7E2">
+            <objects>
+                <viewController storyboardIdentifier="VideoListController" id="lbO-2Y-WK0" customClass="VideoListController" customModule="GSAVPlayer" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8uq-oL-XUr">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="i1j-MK-my4">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="lbO-2Y-WK0" id="SxL-EV-A32"/>
+                                    <outlet property="delegate" destination="lbO-2Y-WK0" id="FgE-o0-2pn"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="i1j-MK-my4" firstAttribute="top" secondItem="UFa-Fb-UVI" secondAttribute="top" id="RZ9-BS-MkI"/>
+                            <constraint firstItem="UFa-Fb-UVI" firstAttribute="bottom" secondItem="i1j-MK-my4" secondAttribute="bottom" id="fW1-19-2oo"/>
+                            <constraint firstItem="UFa-Fb-UVI" firstAttribute="trailing" secondItem="i1j-MK-my4" secondAttribute="trailing" id="yod-kU-NDT"/>
+                            <constraint firstItem="i1j-MK-my4" firstAttribute="leading" secondItem="UFa-Fb-UVI" secondAttribute="leading" id="zNU-MO-u1L"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="UFa-Fb-UVI"/>
+                    </view>
+                    <connections>
+                        <outlet property="tableViewVideos" destination="i1j-MK-my4" id="N54-UN-kAs"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xid-2U-IHj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3050" y="121"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="jkH-ep-JYG">

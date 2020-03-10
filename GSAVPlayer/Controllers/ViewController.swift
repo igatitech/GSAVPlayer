@@ -10,6 +10,9 @@ import UIKit
 import AVKit
 
 class ViewController: UIViewController {
+    @IBOutlet weak var buttonViewCustom : UIButton!
+    @IBOutlet weak var buttonFullScreenDefault : UIButton!
+    @IBOutlet weak var buttonViewDefault : UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,6 +22,7 @@ class ViewController: UIViewController {
 
     func setUpView() {
         self.title = StringConstant.avPlayer
+        buttonFullScreenDefault.titleLabel?.textAlignment = .center
     }
     
     //MARK:- IBActions
@@ -46,7 +50,12 @@ class ViewController: UIViewController {
         self.navigationController?.pushViewController(vcDefaultControls, animated: true)
     }
     
-    
+    @IBAction func videoListButtonClicked(_ sender : UIButton) {
+//        guard let vcVideoList = GetViewController(StoryBoard: .Main, Identifier: .VideoList) else {
+//            return
+//        }
+//        self.navigationController?.pushViewController(vcVideoList, animated: true)
+    }
 
 }
 

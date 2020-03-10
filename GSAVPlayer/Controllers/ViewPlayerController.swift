@@ -24,22 +24,32 @@ class ViewPlayerController: UIViewController {
     //MARK:- Variables
     var player : AVPlayer?
     var imagePicker: UIImagePickerController!
+    var pendingRequestWorkItem : DispatchWorkItem?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpView()
     }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        player?.pause()
+        player = nil
+        player?.removeTimeObserver(self)
+    }
 
     //MARK:- IBActions
     @IBAction func loadVideoFromURLClicked(_ sender : Any) {
+        setUpDefaultState()
         playVideoWithRemoteORLocalURL(urlString: videoUrl)
     }
     
     @IBAction func chooseVideoFromGalleryClicked(_ sender : Any) {
+        setUpDefaultState()
         chooseOrCapture()
     }
     
     @IBAction func loadFromBundleClicked(_ sender : Any) {
+        setUpDefaultState()
         playVideoFromBundle()
     }
     
@@ -50,6 +60,7 @@ class ViewPlayerController: UIViewController {
         } else {
             player?.pause()
         }
+        increasePlayerControlViewDisplayTime(true)
     }
     
     @IBAction func buttonReplayClicked(_ sender : UIButton) {
@@ -58,14 +69,17 @@ class ViewPlayerController: UIViewController {
         self.buttonPlayPause.isSelected = true
         player?.seek(to: CMTime.zero)
         player?.play()
+        increasePlayerControlViewDisplayTime(true)
     }
     
     @IBAction func buttonForwardClicked(_ sender : UIButton) {
         forwardVideo(by: 10)
+        increasePlayerControlViewDisplayTime(true)
     }
     
     @IBAction func buttonBackwardClicked(_ sender : UIButton) {
         rewindVideo(by: 10)
+        increasePlayerControlViewDisplayTime(true)
     }
     
     @IBAction func buttonMuteUnMuteClicked(_ sender : UIButton) {
@@ -75,22 +89,33 @@ class ViewPlayerController: UIViewController {
         } else {
             player?.isMuted = false
         }
+        increasePlayerControlViewDisplayTime(true)
     }
     
     @IBAction func sliderDurationValueChanged(_ sender : UISlider) {
         let seconds = sender.value * Float(CMTimeGetSeconds(player?.currentItem?.duration ?? CMTime()))
         player?.seek(to: CMTime(value: CMTimeValue(seconds * 1000), timescale: 1000))
+        increasePlayerControlViewDisplayTime(true)
     }
     
     //MARK:- Custom Methods
-    func setUpView() {
+    fileprivate func setUpView() {
         buttonChoose.titleLabel?.textAlignment = .center
         viewPlayerControls.isHidden = true
         viewPlayer.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapGestureOnView(_:))))
         viewPlayerControls.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapGestureOnView(_:))))
     }
     
-    func selectImageFrom(_ source: ImageSource){
+    fileprivate func setUpDefaultState() {
+        buttonPlayPause.isHidden = false
+        buttonPlayPause.isSelected = false
+        buttonReplay.isHidden = true
+        player?.pause()
+        player = nil
+        player?.removeTimeObserver(self)
+    }
+    
+    fileprivate func selectImageFrom(_ source: ImageSource){
         imagePicker =  UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.mediaTypes = [StringConstant.publicMovie]
@@ -179,6 +204,7 @@ class ViewPlayerController: UIViewController {
     }
     
     func addPeriodicObserver() {
+        //In the above code, we’ve added an observer to player. This observer will be invoked after every 0.5 seconds
         player?.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: 2), queue: DispatchQueue.main) {[weak self] (progressTime) in
 //            self?.player?.currentItem?.loadedTimeRanges
             if let duration = self?.player?.currentItem?.duration {
@@ -199,7 +225,7 @@ class ViewPlayerController: UIViewController {
         }
     }
     
-    func showPlayerControlView(bool : Bool) {
+    @objc func showPlayerControlView(_ bool : Bool) {
         if bool == true {
             self.viewPlayerControls.alpha = 0
             self.viewPlayerControls.isHidden = false
@@ -215,17 +241,30 @@ class ViewPlayerController: UIViewController {
         }
     }
     
+    func increasePlayerControlViewDisplayTime(_ bool : Bool) {
+        if bool == true {
+            pendingRequestWorkItem?.cancel()
+        }
+        insertDelay()
+    }
+    
+    func insertDelay() {
+        let workItem = DispatchWorkItem {
+            self.showPlayerControlView(false)
+        }
+        pendingRequestWorkItem = workItem
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: workItem)
+    }
+    
     //MARK:- Selector Methods
     @objc func tapGestureOnView(_ tapGesture : UITapGestureRecognizer) {
         let viewTag = tapGesture.view?.tag
         switch viewTag {
         case 1:
-            showPlayerControlView(bool: true)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [unowned self] in
-                self.showPlayerControlView(bool: false)
-            }
+            showPlayerControlView(true)
+            increasePlayerControlViewDisplayTime(false)
         case 2:
-            showPlayerControlView(bool: false)
+            showPlayerControlView(false)
         default:
             print("Default")
         }

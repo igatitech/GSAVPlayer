@@ -21,10 +21,13 @@ enum Storyboards : String {
     case Main = "Main"
 }
 
+struct CellIdentifier {
+    static let VideoTableCell = "VideoTableCell"
+}
 enum ControllerIdentifier : String {
     case ViewPlayer = "ViewPlayerController"
     case DefaultControls = "DefaultControlsController"
-    case FullScreenPlayer = "FullScreenPlayerController"
+    case VideoList = "VideoListController"
 }
 
 //MARK:- Get View Controller

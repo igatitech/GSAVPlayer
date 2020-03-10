@@ -18,4 +18,6 @@ struct StringConstant {
     static let ok = "OK"
     static let error = "Error"
     static let noCamera = "No Camera is available!"
+    static let videoData = "VideoData"
+    static let json = "json"
 }
