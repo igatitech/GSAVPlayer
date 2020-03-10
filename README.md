@@ -14,6 +14,9 @@
 - Play video in full screen with default controls
 - Play video in a view with default controls along with facility to play it in the full screen
 
+## Screenshots :
+![alt text](https://github.com/igatitech/GSAVPlayer/blob/master/GitHubResources/Home.png)            ![alt text](https://github.com/igatitech/GSAVPlayer/blob/master/GitHubResources/ViewCustom.png)            ![alt text](https://github.com/igatitech/GSAVPlayer/blob/master/GitHubResources/FullScreen.png)            ![alt text](https://github.com/igatitech/GSAVPlayer/blob/master/GitHubResources/ViewDefault.png)            ![alt text](https://github.com/igatitech/GSAVPlayer/blob/master/GitHubResources/AspectFill.png)
+
 **Happy Coding! Cheers!!** 🥂 
 
 ## How to Contribute?
